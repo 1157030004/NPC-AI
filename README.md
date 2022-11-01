@@ -1,6 +1,8 @@
 # NPC AI
 NPC AI system inspired by the NPCs in The Sims and Harvest Moon games, with three task logics: simple waypoint based, time scheduled task based, and inner needs based.
 
+![alt text](https://i.imgur.com/0soQeXC.png)
+
 ## Three Types of NPC AI
 - Simple AI
 - Scheduled AI

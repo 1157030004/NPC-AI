@@ -7,13 +7,14 @@ namespace Shadee.Blackboards
 {
     public class Blackboard
     {
-        Dictionary<EBlackboardKey, int> IntValues = new Dictionary<EBlackboardKey, int>();
+        Dictionary<EBlackboardKey, int> StatValues = new Dictionary<EBlackboardKey, int>();
         Dictionary<EBlackboardKey, float> FloatValues = new Dictionary<EBlackboardKey, float>();
         Dictionary<EBlackboardKey, bool> BoolValues = new Dictionary<EBlackboardKey, bool>();
         Dictionary<EBlackboardKey, string> StringValues = new Dictionary<EBlackboardKey, string>();
         Dictionary<EBlackboardKey, Vector3> Vector3Values = new Dictionary<EBlackboardKey, Vector3>();
         Dictionary<EBlackboardKey, GameObject> GameObjectValues = new Dictionary<EBlackboardKey, GameObject>();
         Dictionary<EBlackboardKey, object> genericValues = new Dictionary<EBlackboardKey, object>();
+        Dictionary<IBlackboardStat, float> NPCStatValues = new Dictionary<IBlackboardStat, float>();
 
         public void SetGeneric<T>(EBlackboardKey key, T value)
         {
@@ -40,28 +41,63 @@ namespace Shadee.Blackboards
             return true;
         }
 
-        public void Set(EBlackboardKey key, int value)
+        
+        
+        
+        
+        
+        public void SetStat(IBlackboardStat linkedStat, float value)
         {
-            IntValues[key] = value;
+            NPCStatValues[linkedStat] = value;
         }
 
-        public int GetInt(EBlackboardKey key)
+        public float GetStat(IBlackboardStat linkedStat)
         {
-            if(!IntValues.ContainsKey(key))
-                throw new ArgumentException($"Blackboard does not contain key {key} in IntValues");
+            if(!NPCStatValues.ContainsKey(linkedStat))
+                throw new ArgumentException($"Blackboard does not contain key {linkedStat.DisplayName} in IntValues");
 
-            return IntValues[key];
+            return NPCStatValues[linkedStat];
         }
 
-        public bool TryGet(EBlackboardKey key, out int value, int defaultValue = 0)
+        public bool TryGetStat(IBlackboardStat linkedStat, out float value, float defaultValue = 0f)
         {
-            if(!IntValues.ContainsKey(key))
+            if(!NPCStatValues.ContainsKey(linkedStat))
             {
                 value = defaultValue;
                 return false;
             }
 
-            value = IntValues[key];
+            value = NPCStatValues[linkedStat];
+            return true;
+        }
+
+
+
+
+
+
+        public void Set(EBlackboardKey key, int value)
+        {
+            StatValues[key] = value;
+        }
+
+        public int GetInt(EBlackboardKey key)
+        {
+            if(!StatValues.ContainsKey(key))
+                throw new ArgumentException($"Blackboard does not contain key {key} in IntValues");
+
+            return StatValues[key];
+        }
+
+        public bool TryGet(EBlackboardKey key, out int value, int defaultValue = 0)
+        {
+            if(!StatValues.ContainsKey(key))
+            {
+                value = defaultValue;
+                return false;
+            }
+
+            value = StatValues[key];
             return true;
         }
 

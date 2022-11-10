@@ -6,8 +6,6 @@ namespace Shadee.Blackboards
 {
     public enum EBlackboardKey
     {
-        Character_Stat_Energy,
-        Character_Stat_Fun,
         Character_FocusObject,
         Household_ObjectsInUse,
     }

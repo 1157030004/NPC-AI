@@ -16,7 +16,7 @@ namespace Shadee.NPC_Villagers
     [Serializable]
     public class InteractionStatChange
     {
-        public EStat Target;
+        public Stat LinkedStat;
         public float Value;
     }
     public abstract class BaseInteraction : MonoBehaviour
@@ -39,7 +39,7 @@ namespace Shadee.NPC_Villagers
         {
             foreach (var statChange in _StatChanges)
             {
-                performer.UpdateIndividualStat(statChange.Target, statChange.Value * proportion);
+                performer.UpdateIndividualStat(statChange.LinkedStat, statChange.Value * proportion, Trait.ETargetType.Impact);
             }
         }
 

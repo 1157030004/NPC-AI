@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Easily Entertained
   Impacts:
-  - Stat: 0
-    PositiveScale: 1.25
-    NegativeScale: 0.9
+  - Stat: 1
+    Scoring_PositiveScale: 1.25
+    Scoring_NegativeScale: 0.9
+    Impact_PositiveScale: 1
+    Impact_NegativeScale: 1
     DecayRateScale: 1

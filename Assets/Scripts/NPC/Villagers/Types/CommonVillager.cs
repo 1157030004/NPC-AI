@@ -1,35 +1,28 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Shadee.Blackboards;
 using Shadee.NPC_AI;
+using Shadee.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Shadee.NPC_Villagers
 {
-    public enum EStat
+    [System.Serializable]
+    public class StatConfiguration
     {
-        Energy,
-        Fun,
+        [field: SerializeField] public Stat LinkedStat { get; private set; }
+        [field: SerializeField] public bool OverrideDefaults { get; private set; } = false;
+        [field: SerializeField, Range(0f, 1f)] public float Override_InitialValue { get; protected set; } = 0.5f;
+        [field: SerializeField, Range(0f, 1f)] public float Override_DecayRate { get; protected set; } = 0.005f;
     }
 
     [RequireComponent(typeof(BaseNavigation))]
-
     public class CommonVillager : MonoBehaviour
     {
         [Header("General")]
         [SerializeField] private int HouseHoldID = 1;
-
-        [Header("Fun")]
-        [SerializeField] float InitialEnergyLevel = 0.5f;
-        [SerializeField] float BaseFunDecayRate = 0.05f;
-        [SerializeField] Slider FunDisplay;
-        
-        [Header("Energy")]
-        [SerializeField] float InitialFunLevel = 0.5f;
-        [SerializeField] float BaseEnergyDecayRate = 0.05f;
-        [SerializeField] Slider EnergyDisplay;
+        [field: SerializeField] StatConfiguration[] Stats;
+        [SerializeField] protected FeedbackUIPanel LinkedUI;
 
         [Header("Traits")]
         [SerializeField] protected List<Trait> Traits;
@@ -76,17 +69,8 @@ namespace Shadee.NPC_Villagers
             }
         }
         protected bool StartedPerforming = false;
-
-        public float CurrentFun 
-        {
-            get { return IndividualBackboard.GetFloat(EBlackboardKey.Character_Stat_Fun); }
-            set { IndividualBackboard.Set(EBlackboardKey.Character_Stat_Fun, value); }
-        }
-        public float CurrentEnergy 
-        {
-            get { return IndividualBackboard.GetFloat(EBlackboardKey.Character_Stat_Energy); }
-            set { IndividualBackboard.Set(EBlackboardKey.Character_Stat_Energy, value); }
-        }
+        protected Dictionary<Stat, float> DecayRates = new Dictionary<Stat, float>();
+        protected Dictionary<Stat, StatPanel> StatUIPanel = new Dictionary<Stat, StatPanel>();
 
         public Blackboard IndividualBackboard {get; protected set; }
         public Blackboard HouseHoldBackboard {get; protected set; }
@@ -100,8 +84,18 @@ namespace Shadee.NPC_Villagers
             IndividualBackboard = BlackboardManager.Instance.GetIndivualBlackboard(this);
             HouseHoldBackboard = BlackboardManager.Instance.GetSharedBlackboard(HouseHoldID);
 
-            FunDisplay.value = CurrentFun = InitialFunLevel;
-            EnergyDisplay.value = CurrentEnergy = InitialEnergyLevel;
+            foreach (var statConfig in Stats)
+            {
+                var linkedStat = statConfig.LinkedStat;
+                float initialValue = statConfig.OverrideDefaults ? statConfig.Override_InitialValue : linkedStat.InitialValue;
+                float decayRate = statConfig.OverrideDefaults ? statConfig.Override_DecayRate : linkedStat.DecayRate;
+
+                DecayRates[linkedStat] = decayRate;
+                IndividualBackboard.SetStat(linkedStat, initialValue);
+
+                if(linkedStat.IsVisible)
+                    StatUIPanel[linkedStat] = LinkedUI.AddStat(linkedStat, initialValue);
+            }
         }
 
         protected virtual void OnEnable() 
@@ -113,11 +107,11 @@ namespace Shadee.NPC_Villagers
         }
 
 
-        protected float ApplyTraitsTo(EStat targetStat, float currentValue, bool isDecay)
+        protected float ApplyTraitsTo(Stat targetStat, Trait.ETargetType targetType,  float currentValue)
         {
             foreach (var trait in Traits)
             {
-                currentValue = trait.Apply(targetStat, currentValue, isDecay);
+                currentValue = trait.Apply(targetStat, targetType, currentValue);
             }
 
             return currentValue;
@@ -134,11 +128,10 @@ namespace Shadee.NPC_Villagers
                 }
             }
 
-            CurrentFun = Mathf.Clamp01(CurrentFun - ApplyTraitsTo(EStat.Fun, BaseFunDecayRate, true) * Time.deltaTime);
-            FunDisplay.value = CurrentFun;
-
-            CurrentEnergy = Mathf.Clamp01(CurrentEnergy - ApplyTraitsTo(EStat.Energy, BaseEnergyDecayRate, true) * Time.deltaTime);
-            EnergyDisplay.value = CurrentEnergy;
+            foreach (var statConfig in Stats)
+            {
+                UpdateIndividualStat(statConfig.LinkedStat, -DecayRates[statConfig.LinkedStat] * Time.deltaTime, Trait.ETargetType.DecayRate);
+            }
         }
 
         protected virtual void OnInteractionFinished(BaseInteraction interaction)
@@ -148,18 +141,21 @@ namespace Shadee.NPC_Villagers
             Debug.Log($"Finished {interaction.DisplayName}");
         }
 
-        public void UpdateIndividualStat(EStat target, float amount)
+        public void UpdateIndividualStat(Stat linkedStat, float amount, Trait.ETargetType targetType)
         {
-            var adjustedAmount = ApplyTraitsTo(target, amount, false);
-            switch(target)
-            {
-                case EStat.Energy:
-                    CurrentEnergy = Mathf.Clamp01(CurrentEnergy + adjustedAmount);
-                    break;
-                case EStat.Fun:
-                    CurrentFun = Mathf.Clamp01(CurrentFun + adjustedAmount);
-                    break;
-            }
+            var adjustedAmount = ApplyTraitsTo(linkedStat, targetType, amount);
+            float newValue = Mathf.Clamp01(GetStatValue(linkedStat) + adjustedAmount);
+
+            IndividualBackboard.SetStat(linkedStat, newValue);
+
+            if(linkedStat.IsVisible)
+                StatUIPanel[linkedStat].OnStatChanged(newValue);
+        }
+
+        public float GetStatValue(Stat linkedStat)
+        {
+            
+            return IndividualBackboard.GetStat(linkedStat);
         }
     }
 }

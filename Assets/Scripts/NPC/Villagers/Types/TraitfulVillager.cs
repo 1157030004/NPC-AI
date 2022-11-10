@@ -41,26 +41,17 @@ namespace Shadee.NPC_Villagers
             float score = 0;
             foreach (var change in interaction.StatChanges)
             {
-                score += ScoreChange(change.Target, change.Value);
+                score += ScoreChange(change.LinkedStat, change.Value);
             }
 
             return score;
         }
 
-        private float ScoreChange(EStat target, float amount)
+        private float ScoreChange(Stat linkedStat, float amount)
         {
-            float currentValue =  0f;
-            switch(target)
-            {
-                case EStat.Energy:
-                    currentValue = CurrentEnergy;
-                    break;
-                case EStat.Fun:
-                    currentValue = CurrentFun;
-                    break;
-            }
+            float currentValue =  GetStatValue(linkedStat);
 
-            return (1f - currentValue) * ApplyTraitsTo(target, amount, false);
+            return (1f - currentValue) * ApplyTraitsTo(linkedStat, Trait.ETargetType.Score, amount);
         }
 
         private class ScoredInteraction

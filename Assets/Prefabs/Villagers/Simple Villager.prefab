@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &262228541136422522
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3051959787781142275, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_Name
+      value: Simple Villager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023044056469806552, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+--- !u!114 &2263453799501622004 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2074743553605151886, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+  m_PrefabInstance: {fileID: 262228541136422522}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b4c02c7b40cf747bfde8a02226d0c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &3024486256439423353 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3051959787781142275, guid: f06b9800aff6d7d40ab62acbb3209c39, type: 3}
+  m_PrefabInstance: {fileID: 262228541136422522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8967908820062856360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3024486256439423353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac075a9f4e66ed6469ccf34fa998d8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HouseHoldID: 1
+  Stats:
+  - <LinkedStat>k__BackingField: {fileID: 11400000, guid: 5f65ac0c1d60ca449bc5913d794d2a12, type: 2}
+    <OverrideDefaults>k__BackingField: 0
+    <Override_InitialValue>k__BackingField: 0
+    <Override_DecayRate>k__BackingField: 0
+  - <LinkedStat>k__BackingField: {fileID: 11400000, guid: a3e4cc383b776b143b1b8c7c1c1eb8c6, type: 2}
+    <OverrideDefaults>k__BackingField: 0
+    <Override_InitialValue>k__BackingField: 0
+    <Override_DecayRate>k__BackingField: 0
+  LinkedUI: {fileID: 2263453799501622004}
+  Traits:
+  - {fileID: 11400000, guid: 47f8b5c66842e1c4ab0013cea054b4f0, type: 2}
+  PickInteractionInterval: 2

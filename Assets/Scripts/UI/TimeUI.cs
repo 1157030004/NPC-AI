@@ -4,7 +4,7 @@ using Shadee.WorldTimes;
 using TMPro;
 using UnityEngine;
 
-namespace Shadee
+namespace Shadee.UI
 {
     public class TimeUI : MonoBehaviour
     {
